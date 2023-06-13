@@ -1,0 +1,116 @@
+<html>
+<head>
+  <script>
+  function GET(url)
+  {
+    var x = new XMLHttpRequest();
+    x.open("GET", url, false);
+    x.send();
+    if (x.status === 200)
+    {
+        return x.responseText;
+    }
+  };
+
+  // From https://stackoverflow.com/a/52387803
+  function secondsToDhms(seconds)
+  {
+    seconds = Number(seconds);
+    var d = Math.floor(seconds / (3600*24));
+    var h = Math.floor(seconds % (3600*24) / 3600);
+    var m = Math.floor(seconds % 3600 / 60);
+    var s = Math.floor(seconds % 60);
+
+    var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  }
+
+  function checknum(val, field)
+  {
+    if (!Number.isInteger(+val))
+    { 
+      alert(field + " is not a number");
+      return false;
+    }
+    return true;
+  }
+
+  function calctime()
+  {
+    var ld=document.time.ld.value; if (!checknum(ld,"Min Days")) { return false };
+    var lh=document.time.lh.value; if (!checknum(lh,"Min Hours")) { return false };
+    var lm=document.time.lm.value; if (!checknum(lm,"Min Mins")) { return false };
+    var ls=document.time.ls.value; if (!checknum(ls,"Min Secs")) { return false };
+    var ladd=0+((ld*24+lh)*60+lm)*60+ls;
+    document.time.laddtime.value=ladd;
+    console.log('low',ld,lh,lm,ls,ladd);
+  
+    var hd=document.time.hd.value; if (!checknum(hd,"Max Days")) { return false };
+    var hh=document.time.hh.value; if (!checknum(hh,"Max Hours")) { return false };
+    var hm=document.time.hm.value; if (!checknum(hm,"Max Mins")) { return false };
+    var hs=document.time.hs.value; if (!checknum(hs,"Max Secs")) { return false };
+    var hadd=0+((hd*24+hh)*60+hm)*60+hs;
+    if (hadd==0) { hadd=ladd; }
+    document.time.haddtime.value=hadd;
+    console.log('high',hd,hh,hm,hs,hadd);
+
+    if (hadd==0 && ladd==0) { alert("No times entered"); return false; }
+    return true;
+  }
+
+  var t=GET("http:safe/?status=1");
+
+  const date=new Date();
+  const end=new Date(date.getTime() + t*1000)
+
+  </script>
+</head>
+<body>
+<center>
+<h1>The safe is
+<script>if (t==0) { document.write("not locked and may be opened") } else { document.write("locked"); }</script>
+</h1>
+<hr>
+<table>
+<tr><td align=right>The current time is:</td><td><script>document.write(date)</script></td></tr>
+<script>if (t>0)
+{
+  document.write("<tr><td align=right>The expected unlock time is:</td><td>" + end + "</td></tr>");
+  document.write("<tr><td align=right>Expected time remaining:</td><td>" + secondsToDhms(t) + "</td></tr>");
+} else if (t==-1)
+{
+  document.write("<tr><td align=right>Expected time remaining:</td><td><b>Hidden</b></td></td>");
+}
+</script>
+</table>
+</center>
+
+<hr>
+<center>
+  <h2>Add time</h2>
+  <form name=time action=safe/ method=post onsubmit="return calctime()" enctype="multipart/form-data">
+    Min Days: <input name=ld size=3>
+    Hours: <input name=lh size=3>
+    Minutes: <input name=lm size=3>
+    Seconds: <input name=ls size=3>
+<p>
+    Max Days: <input name=hd size=3>
+    Hours: <input name=hh size=3>
+    Minutes: <input name=hm size=3>
+    Seconds: <input name=hs size=3>
+
+    <input type=hidden name=laddtime>
+    <input type=hidden name=haddtime>
+<p>
+(Only enter Max values if you want the safe to pick a random period between these dates)
+<p>
+    Hide timer? <input type=checkbox name=hide>
+  <input type=submit value="Add Time">
+</form>
+</center>
+
+</body>
+</html>
