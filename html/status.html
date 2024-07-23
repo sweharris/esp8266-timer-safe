@@ -40,19 +40,19 @@
 
   function calctime()
   {
-    var ld=document.time.ld.value; if (!checknum(ld,"Min Days")) { return false };
-    var lh=document.time.lh.value; if (!checknum(lh,"Min Hours")) { return false };
-    var lm=document.time.lm.value; if (!checknum(lm,"Min Mins")) { return false };
-    var ls=document.time.ls.value; if (!checknum(ls,"Min Secs")) { return false };
-    var ladd=0+((ld*24+lh)*60+lm)*60+ls;
+    var ld=Number(document.time.ld.value); if (!checknum(ld,"Min Days")) { return false };
+    var lh=Number(document.time.lh.value); if (!checknum(lh,"Min Hours")) { return false };
+    var lm=Number(document.time.lm.value); if (!checknum(lm,"Min Mins")) { return false };
+    var ls=Number(document.time.ls.value); if (!checknum(ls,"Min Secs")) { return false };
+    var ladd=((ld*24+lh)*60+lm)*60+ls;
     document.time.laddtime.value=ladd;
     console.log('low',ld,lh,lm,ls,ladd);
   
-    var hd=document.time.hd.value; if (!checknum(hd,"Max Days")) { return false };
-    var hh=document.time.hh.value; if (!checknum(hh,"Max Hours")) { return false };
-    var hm=document.time.hm.value; if (!checknum(hm,"Max Mins")) { return false };
-    var hs=document.time.hs.value; if (!checknum(hs,"Max Secs")) { return false };
-    var hadd=0+((hd*24+hh)*60+hm)*60+hs;
+    var hd=Number(document.time.hd.value); if (!checknum(hd,"Max Days")) { return false };
+    var hh=Number(document.time.hh.value); if (!checknum(hh,"Max Hours")) { return false };
+    var hm=Number(document.time.hm.value); if (!checknum(hm,"Max Mins")) { return false };
+    var hs=Number(document.time.hs.value); if (!checknum(hs,"Max Secs")) { return false };
+    var hadd=((hd*24+hh)*60+hm)*60+hs;
     if (hadd==0) { hadd=ladd; }
     document.time.haddtime.value=hadd;
     console.log('high',hd,hh,hm,hs,hadd);
