@@ -182,8 +182,11 @@ void addtime()
   int newtimer = timer+t;
   // If newtimer is less than timer then we've wrapped the int!!
   if (newtimer < timer)
+  {
+    Serial.println("Timer wrap around prevented");
     newtimer=2147483647;  // INT_MAX
-  timer += t;
+  }
+  timer = newtimer;
 
   if (server.arg("hide") != "")
     hidden=1;
