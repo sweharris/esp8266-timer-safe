@@ -179,6 +179,10 @@ void addtime()
   // sufficient to seed the RNG
   randomSeed(time(NULL));
   int t = random(low,high+1);
+  int newtimer = timer+t;
+  // If newtimer is less than timer then we've wrapped the int!!
+  if (newtimer < timer)
+    newtimer=2147483647;  // INT_MAX
   timer += t;
 
   if (server.arg("hide") != "")
