@@ -27,9 +27,10 @@ recompile: $(TARGET)
 
 netupload: $(TARGET)
 ifdef host
-	python3 $(BASICOTA) -i ${host} -P 8266 -d -f $(TARGET)
+	python3 $(BASICOTA) -i ${host} -P 8266 -d -f $(TARGET) ${pass}
 else
 	@echo Need host=target to be set - eg make $@ host=testesp
+	@echo 'If a password is set then also supply pass="-a password"'
 endif
 
 upload:
