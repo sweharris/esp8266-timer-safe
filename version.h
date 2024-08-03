@@ -1,1 +1,2 @@
-#define VERSION "2024-07-24.1"
+String VERSION="2024-08-03.1";
+String MODEL="Timer";

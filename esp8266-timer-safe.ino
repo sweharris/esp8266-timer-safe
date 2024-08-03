@@ -156,12 +156,12 @@ void save_timer()
 // global server state variable to read the request.  This only works
 // 'cos the main loop is single threaded!
 
-void status()
+void status(String prefix="")
 {
   if (hidden==0)
-    send_text(String(timer));
+    send_text(prefix + timer);
   else
-    send_text("-1");
+    send_text(prefix + "-1");
 }
 
 
@@ -338,6 +338,7 @@ boolean handleRequest()
   else if (path == "/safe/")
   {
          if (server.hasArg("status"))     { status(); }
+         if (server.hasArg("version"))    { status(String(MODEL) + " " + VERSION + ","); }
     else if (server.hasArg("open"))       { opensafe(); }
     else if (server.hasArg("setauth"))    { set_auth(); }
     else if (server.hasArg("laddtime"))    { addtime(); }
